@@ -12,6 +12,6 @@ interface Fetcher<T : Any> {
 
     fun canFetch(data: Any): Boolean
 
-    fun fetch(data: Any, loadConfig: LoadConfig): Flow<Resource<ByteReadChannel>>
+    fun fetch(data: Any, loadConfig: LoadConfig): Flow<Resource<ByteArray>>
 
 }

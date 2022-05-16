@@ -3,11 +3,11 @@ package ro.dragossusi.kil.decoder
 import io.ktor.utils.io.*
 import ro.dragossusi.kil.config.LoadConfig
 
-interface Decoder<T> {
+interface Decoder<R> {
 
     suspend fun decode(
-        channel: ByteReadChannel,
+        data: ByteArray,
         loadConfig: LoadConfig
-    ): T
+    ): R
 
 }

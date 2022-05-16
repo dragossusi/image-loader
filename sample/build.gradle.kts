@@ -1,3 +1,4 @@
+import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.compose.compose
 
@@ -35,6 +36,8 @@ android {
     }
 }
 
+val ktor_version = "2.0.0"
+
 kotlin {
 //    ios()
     jvm()
@@ -49,7 +52,14 @@ kotlin {
                 api(compose.foundation)
                 api(compose.runtime)
                 api(compose.ui)
+                api(compose.material)
 
+                //todo
+//                @OptIn(ExperimentalComposeLibrary::class)
+//                api(compose.material3)
+
+                api(project(":kil"))
+                api(project(":kil-compose"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
 
                 implementation("com.squareup.okio:okio:3.1.0")
@@ -58,9 +68,15 @@ kotlin {
                 implementation("io.ktor:ktor-client-core:$ktor_version")
             }
         }
-        val jsMain by getting{
+        val jsMain by getting {
             dependencies {
-                implementation("com.squareup.okio:okio-nodefilesystem:3.1.0")
+                implementation("io.ktor:ktor-client-js:$ktor_version")
+            }
+        }
+        val jvmMain by getting {
+            dependencies {
+                implementation(compose.desktop.currentOs)
+                implementation("io.ktor:ktor-client-cio:$ktor_version")
             }
         }
     }

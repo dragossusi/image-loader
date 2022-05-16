@@ -5,6 +5,7 @@ import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.util.*
 import io.ktor.utils.io.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -24,7 +25,7 @@ class NetworkFetcher(
                 (data.protocol.name == "http" || data.protocol.name == "https")
     }
 
-    override fun fetch(data: Any, loadConfig: LoadConfig): Flow<Resource<ByteReadChannel>> = channelFlow {
+    override fun fetch(data: Any, loadConfig: LoadConfig): Flow<Resource<ByteArray>> = channelFlow {
         if (!canFetch(data)) {
             send(Resource.Failure(IllegalArgumentException()))
             return@channelFlow
@@ -38,6 +39,6 @@ class NetworkFetcher(
             url(data as Url)
         }
         val bytes = response.bodyAsChannel()
-        send(Resource.Success(bytes))
+        send(Resource.Success(bytes.toByteArray()))
     }
 }

@@ -1,19 +1,21 @@
-package ro.dragossusi.kil.compose
+package ro.dragossusi.kil.config
 
 import io.ktor.client.*
 import io.ktor.http.*
 import okio.FileSystem
 import okio.Path
 import ro.dragossusi.kil.cache.PlatformCache
+import ro.dragossusi.kil.decoder.Decoder
 import ro.dragossusi.kil.fetcher.Fetcher
 import ro.dragossusi.kil.fetcher.FileFetcher
 import ro.dragossusi.kil.fetcher.NetworkFetcher
+import ro.dragossusi.kil.files.DefaultFileSystem
 import kotlin.reflect.KClass
 
-class KilComposeConfigBuilder(
+class KilConfigBuilder(
     val fetchers: MutableMap<KClass<*>, Fetcher<*>> = mutableMapOf(),
+    val decoders: MutableMap<KClass<*>, Decoder<*>> = mutableMapOf(),
     var maxCacheSize: Int = 20,
-    var fileSystem: FileSystem = DefaultFileSystem,
     var client: HttpClient? = null
 ) {
 
@@ -21,12 +23,16 @@ class KilComposeConfigBuilder(
         fetchers[T::class] = fetcher
     }
 
-    internal fun build(): KilComposeConfig {
+    inline fun <reified T : Any> addDecoder(decoder: Decoder<T>) {
+        decoders[T::class] = decoder
+    }
+
+    fun build(): KilConfig {
         val list = fetchers.toMutableMap()
-        list[Path::class] = FileFetcher(fileSystem)
         list[Url::class] = NetworkFetcher(createClient())
-        return KilComposeConfig(
+        return DefaultKilConfig(
             fetchers.toMap(),
+            decoders.toMap(),
             PlatformCache(maxCacheSize),
         )
     }
@@ -34,4 +40,12 @@ class KilComposeConfigBuilder(
     private fun createClient(): HttpClient {
         return client ?: HttpClient()
     }
+}
+
+fun KilConfigBuilder.fileFetcher(fileSystem: FileSystem = DefaultFileSystem) {
+    addFetcher(FileFetcher(fileSystem))
+}
+
+fun KilConfigBuilder.urlFetcher(client: HttpClient) {
+    addFetcher(NetworkFetcher(client))
 }

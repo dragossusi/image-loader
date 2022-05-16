@@ -29,8 +29,3 @@ actual class PlatformCache<K, V> actual constructor(
         map[key] = value
     }
 }
-
-@Composable
-fun imageTest() {
-    loadSvgPainter()
-}

@@ -1,4 +1,4 @@
-package ro.dragossusi.kil.compose
+package ro.dragossusi.kil.files
 
 import okio.FileSystem
 
