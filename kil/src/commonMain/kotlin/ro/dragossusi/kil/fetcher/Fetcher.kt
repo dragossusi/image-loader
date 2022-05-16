@@ -1,6 +1,5 @@
 package ro.dragossusi.kil.fetcher
 
-import io.ktor.utils.io.*
 import kotlinx.coroutines.flow.Flow
 import ro.dragossusi.kil.DataSource
 import ro.dragossusi.kil.Resource

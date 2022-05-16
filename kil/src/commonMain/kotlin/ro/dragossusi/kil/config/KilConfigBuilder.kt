@@ -3,7 +3,6 @@ package ro.dragossusi.kil.config
 import io.ktor.client.*
 import io.ktor.http.*
 import okio.FileSystem
-import okio.Path
 import ro.dragossusi.kil.cache.PlatformCache
 import ro.dragossusi.kil.decoder.Decoder
 import ro.dragossusi.kil.fetcher.Fetcher

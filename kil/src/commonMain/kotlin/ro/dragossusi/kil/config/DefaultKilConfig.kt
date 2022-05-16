@@ -1,7 +1,6 @@
 package ro.dragossusi.kil.config
 
 import androidx.compose.ui.graphics.painter.Painter
-import okio.Path
 import ro.dragossusi.kil.cache.Cache
 import ro.dragossusi.kil.decoder.Decoder
 import ro.dragossusi.kil.fetcher.Fetcher

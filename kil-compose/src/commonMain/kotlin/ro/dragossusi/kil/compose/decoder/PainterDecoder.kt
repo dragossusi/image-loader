@@ -10,8 +10,10 @@ import ro.dragossusi.kil.decoder.Decoder
 object PainterDecoder : Decoder<Painter> {
 
     override suspend fun decode(data: ByteArray, loadConfig: LoadConfig): BitmapPainter {
-        val bitmap = Image.makeFromEncoded(data).toComposeImageBitmap()
-        return BitmapPainter(bitmap)
+        //create bitmap from data
+        val bitmap = Image.makeFromEncoded(data)
+        //todo resize bitmap to loadConfig.size(DpSize)
+        return BitmapPainter(bitmap.toComposeImageBitmap())
     }
 
 }

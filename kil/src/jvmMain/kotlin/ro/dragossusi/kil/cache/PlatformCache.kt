@@ -1,8 +1,5 @@
 package ro.dragossusi.kil.cache
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.loadSvgPainter
-
 actual class PlatformCache<K, V> actual constructor(
     override val maxSize: Int
 ) : Cache<K, V> {

@@ -6,7 +6,6 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.util.*
-import io.ktor.utils.io.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import ro.dragossusi.kil.DataSource
@@ -41,4 +40,5 @@ class NetworkFetcher(
         val bytes = response.bodyAsChannel()
         send(Resource.Success(bytes.toByteArray()))
     }
+
 }
