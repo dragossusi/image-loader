@@ -44,6 +44,7 @@ private fun AsyncImage(resource: Resource<Painter>) {
             Text(resource.progress.toString())
         }
         is Resource.Failure -> {
+            resource.throwable.printStackTrace()
             Text(resource.throwable.toString())
         }
     }

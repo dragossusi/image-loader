@@ -14,34 +14,23 @@ repositories {
     mavenCentral()
 }
 
-android {
-    compileSdk = 31
-
-    defaultConfig {
-        minSdk = 21
-        targetSdk = 31
+kotlin {
+    if (Features.isJvmEnabled) {
+        jvm()
     }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    sourceSets {
-        getByName("main") {
-            manifest.srcFile("src/androidMain/AndroidManifest.xml")
-            res.srcDirs("src/androidMain/res")
+    if (Features.isAndroidEnabled) {
+        android {
+            publishLibraryVariants("release", "debug")
         }
     }
-}
-
-kotlin {
-//    ios()
-    jvm()
-    android {
-        publishLibraryVariants("release", "debug")
+    if (Features.isJsEnabled) {
+        js(IR) {
+            browser()
+        }
     }
-    js(IR)
+    if (Features.isIosEnabled) {
+        ios()
+    }
 
     sourceSets {
         val commonMain by getting {
@@ -50,17 +39,18 @@ kotlin {
                 api(compose.runtime)
                 api(compose.ui)
 
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}")
 
-                implementation("com.squareup.okio:okio:3.1.0")
+                implementation("com.squareup.okio:okio:${Versions.okio}")
 
-                val ktor_version = "2.0.0"
-                implementation("io.ktor:ktor-client-core:$ktor_version")
+                implementation("io.ktor:ktor-client-core:${Versions.ktor}")
             }
         }
-        val jsMain by getting{
-            dependencies {
-                implementation("com.squareup.okio:okio-nodefilesystem:3.1.0")
+        if (Features.isJsEnabled) {
+            val jsMain by getting {
+                dependencies {
+                    implementation("com.squareup.okio:okio-nodefilesystem:${Versions.okio}")
+                }
             }
         }
     }
@@ -68,4 +58,8 @@ kotlin {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+if (Features.isAndroidEnabled) {
+    apply<InstallAndroidPlugin>()
 }
