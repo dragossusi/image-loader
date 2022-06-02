@@ -11,5 +11,6 @@ data class LoadConfig(
     val requestData: HttpRequestData? = null,
     val coroutineContext: CoroutineContext = Dispatchers.Default,
     @property:KilExperimental val dataSource: DataSource? = null,
-    @property:KilExperimental val size: DpSize? = null
+    @property:KilExperimental val size: DpSize? = null,
+    @property:KilExperimental val cacheOnDisk: Boolean = false
 )

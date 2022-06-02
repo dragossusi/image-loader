@@ -6,6 +6,9 @@ actual class PlatformCache<K, V> actual constructor(
 
     private val cache: MutableMap<K, V> = LinkedHashMap<K, V>(maxSize, 0.75f)
 
+    override val cacheType: CacheType
+        get() = CacheType.DISK
+
     override val size: Int
         get() = cache.size
 
@@ -13,8 +16,12 @@ actual class PlatformCache<K, V> actual constructor(
         cache.clear()
     }
 
-    override fun remove(key: K): V? {
-        return cache.remove(key)
+    override fun removeKey(key: K) {
+        cache.remove(key)
+    }
+
+    override fun contains(key: K): Boolean {
+        return cache.contains(key)
     }
 
     override fun get(key: K): V? {

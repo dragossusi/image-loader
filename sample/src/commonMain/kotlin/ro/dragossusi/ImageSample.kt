@@ -1,26 +1,29 @@
 package ro.dragossusi
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import io.ktor.client.*
 import io.ktor.http.*
+import okio.Path.Companion.toPath
+import ro.dragossusi.kil.DataSource
 import ro.dragossusi.kil.Resource
-import ro.dragossusi.kil.compose.KilCompose
-import ro.dragossusi.kil.compose.bitmapDecoder
-import ro.dragossusi.kil.compose.rememberImagePainter
-import ro.dragossusi.kil.compose.rememberKilConfig
+import ro.dragossusi.kil.compose.*
 import ro.dragossusi.kil.config.LoadConfig
 import ro.dragossusi.kil.config.fileFetcher
+import ro.dragossusi.kil.config.ramImageBitmapCache
 import ro.dragossusi.kil.config.urlFetcher
 import ro.dragossusi.kil.files.DefaultFileSystem
+
+
+private val imageUrl = Url("http://placehold.jp/300x300.png")
 
 @Composable
 fun ImageSample(
@@ -30,15 +33,33 @@ fun ImageSample(
         fileFetcher(DefaultFileSystem)
         urlFetcher(client)
         bitmapDecoder()
+        ramImageBitmapCache()
+        filePainterCache("cache".toPath())
+    }
+    var loadFromMemory by remember {
+        mutableStateOf(false)
     }
     KilCompose(config) {
-        val painter by rememberImagePainter(
-            Url("http://placehold.jp/300x300.png"),
-            loadConfig = LoadConfig(
-                size = DpSize(32.dp, 32.dp)
-            )
-        )
-        AsyncImage(painter, modifier = Modifier.size(128.dp))
+        val painter by rememberImagePainter(imageUrl)
+        Column {
+            AsyncImage(painter, modifier = Modifier.size(128.dp))
+
+            Button(
+                onClick = { loadFromMemory = true }
+            ) {
+                Text("Load from memory")
+            }
+
+            if (loadFromMemory) {
+                val painter by rememberImagePainter(
+                    imageUrl,
+                    loadConfig = LoadConfig(
+                        dataSource = DataSource.Memory
+                    )
+                )
+                AsyncImage(painter, modifier = Modifier.size(128.dp))
+            }
+        }
     }
 }
 

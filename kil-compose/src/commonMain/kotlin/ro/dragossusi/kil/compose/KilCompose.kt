@@ -2,9 +2,12 @@ package ro.dragossusi.kil.compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import ro.dragossusi.kil.compose.decoder.PainterDecoder
+import okio.Path
+import ro.dragossusi.kil.compose.coder.ImageFileCoder
+import ro.dragossusi.kil.compose.decoder.BitmapDecoder
 import ro.dragossusi.kil.config.KilConfig
 import ro.dragossusi.kil.config.KilConfigBuilder
+import ro.dragossusi.kil.config.fileCache
 
 @Composable
 fun rememberKilConfig(
@@ -23,5 +26,14 @@ fun KilCompose(
 }
 
 fun KilConfigBuilder.bitmapDecoder() {
-    addDecoder(PainterDecoder)
+    addDecoder(BitmapDecoder)
+}
+
+fun KilConfigBuilder.filePainterCache(
+    dir: Path
+) {
+    fileCache(
+        dir = dir,
+        fileCoder = ImageFileCoder()
+    )
 }
