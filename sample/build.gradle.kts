@@ -25,8 +25,9 @@ kotlin {
     }
     if (Features.isJsEnabled) {
         js(IR) {
-            browser()
-            binaries.executable()
+            nodejs {
+                binaries.executable()
+            }
         }
     }
     if (Features.isIosEnabled) {

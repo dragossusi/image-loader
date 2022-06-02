@@ -18,11 +18,15 @@
  *
  */
 object Versions {
-    const val serialization = "1.0.1"
+    //not used yet
+//    const val serialization = "1.3.3"
 
     const val coroutines = "1.6.1"
-    const val ktor = "2.0.1"
+    const val ktor = "2.0.2"
     const val okio = "3.1.0"
+
+    const val kotlin = "1.6.21"
+    const val compose = "1.2.0-alpha01-dev686"
 
     const val app = "0.0.1"
 }
